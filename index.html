@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#236fc8">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Invite Link Builder V4</title>
+  <style>
+    :root{
+      --blue:#236fc8;--bg:#f3f7fb;--card:#fff;--text:#24364b;--muted:#7f90a4;
+      --line:#dce4ed;--green:#187f58;--green-bg:#eaf8f1;--orange:#a96713;
+      --orange-bg:#fff4df;--red:#b83f46;--red-bg:#fff0f1
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,input,textarea,select{font:inherit}button{touch-action:manipulation}
+    .hero{padding:29px 16px 27px;text-align:center;color:#fff;background:linear-gradient(120deg,#1f62b4,#4a9bd8)}
+    .eyebrow{margin-bottom:7px;font-size:11px;font-weight:900;letter-spacing:.22em;opacity:.9}
+    h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:30px;line-height:1.15}
+    .hero p{margin:7px 0 0;color:#dceeff;font-size:13px}
+    .wrap{width:min(980px,calc(100% - 24px));margin:22px auto 44px}
+    .card{margin-bottom:16px;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 8px 24px rgba(29,65,108,.07)}
+    .hidden{display:none!important}.login-card{max-width:520px;margin:28px auto}
+    .login-card h2{margin:0 0 5px;font-size:19px}.login-note{margin:0 0 17px;color:var(--muted);font-size:12px;line-height:1.55}
+    .topbar,.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+    .section-title{margin-bottom:13px}.section-title h2{margin:0;font-size:17px}
+    .userline{color:#60768f;font-size:13px}.userline strong{color:#29415c}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:15px}.field.full{grid-column:1/-1}
+    label{display:block;margin-bottom:7px;color:#5a718b;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+    input,textarea,select{width:100%;padding:11px 12px;border:1px solid #d5e0eb;border-radius:9px;outline:none;background:#fbfcfe;color:#344b64;transition:.18s}
+    input:focus,textarea:focus,select:focus{border-color:#70a8e6;background:#fff;box-shadow:0 0 0 3px rgba(60,137,218,.1)}
+    textarea{min-height:145px;resize:vertical;line-height:1.55}.hint{margin-top:6px;color:var(--muted);font-size:11px;line-height:1.45}
+    .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .btn{border:0;border-radius:8px;padding:10px 12px;font-size:12px;font-weight:900;cursor:pointer;transition:.16s}
+    .btn:hover{filter:brightness(1.03);transform:translateY(-1px)}.btn:disabled{cursor:not-allowed;opacity:.55;transform:none}
+    .btn-primary{color:#fff;background:var(--blue);box-shadow:0 4px 10px rgba(35,111,200,.2)}
+    .btn-soft{color:#2567ae;background:#edf4fb}.btn-success{color:var(--green);background:var(--green-bg)}
+    .btn-warning{color:var(--orange);background:var(--orange-bg)}.btn-danger{color:var(--red);background:var(--red-bg)}
+    .btn-gray{color:#617286;background:#eef2f6}.btn-block{width:100%;padding:12px 14px;font-size:13px}
+    .status-line{min-height:18px;margin-top:10px;color:#26805a;font-size:12px}.status-line.error{color:#bb4148}
+    .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-bottom:14px}
+    .stat{min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe}.stat b{display:block;margin-bottom:2px;font-size:20px}.stat span{color:#74869a;font-size:11px}
+    .filters{display:grid;grid-template-columns:1.4fr .8fr auto;gap:9px;margin-bottom:12px}.list{display:grid;gap:10px}
+    .guest{padding:12px;border:1px solid #e0e7ef;border-radius:11px;background:#fcfdff}
+    .guest[data-status="copied"]{border-color:#efcf9b;background:#fffdf8}.guest[data-status="sent"]{border-color:#b8d9ef;background:#f8fcff}
+    .guest[data-status="confirmed"]{border-color:#a6dbc2;background:#f7fcf9}.guest[data-status="declined"]{border-color:#e5b4b8;background:#fffafa}
+    .guest-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.guest-name{margin-bottom:5px;font-weight:900;line-height:1.35}
+    .link{color:#6c7f92;font-size:11px;line-height:1.45;word-break:break-all}.badge{flex:0 0 auto;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap}
+    .badge-new{color:#617286;background:#edf2f7}.badge-copied{color:var(--orange);background:var(--orange-bg)}.badge-sent{color:#2876a8;background:#eaf5fd}
+    .badge-confirmed{color:var(--green);background:var(--green-bg)}.badge-declined{color:var(--red);background:var(--red-bg)}
+    .guest-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.guest-actions .btn{padding:8px 10px}
+    .meta{margin-top:8px;color:#98a7b6;font-size:10px;line-height:1.45}.empty{padding:28px 10px;border:1px dashed #d6e0e9;border-radius:10px;background:#fbfcfe;color:#8fa0b2;text-align:center;font-size:13px}
+    .notice{margin-top:14px;padding:11px 12px;border-radius:9px;background:#f3f7fb;color:#667b92;font-size:11px;line-height:1.5}
+    .danger-zone{margin-top:16px;padding-top:14px;border-top:1px solid #edf1f5}footer{padding-top:4px;color:#9caabd;text-align:center;font-size:11px}
+    @media(max-width:820px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:720px){.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.filters{grid-template-columns:1fr}}
+    @media(max-width:480px){h1{font-size:24px}.card{padding:16px}.stats{grid-template-columns:1fr 1fr}.guest-head{display:block}.badge{display:inline-block;margin-top:4px}.toolbar .btn{flex:1 1 calc(50% - 8px)}.guest-actions .btn{flex:1 1 auto}}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="eyebrow">CÔNG CỤ THIỆP MỜI V4</div>
+    <h1>Quản lý Link Khách Mời</h1>
+    <p>Firebase đồng bộ • ghi nhận đã copy • hạn chế gửi trùng khách</p>
+  </section>
+
+  <main class="wrap">
+    <section id="loginCard" class="card login-card">
+      <h2>Đăng nhập quản trị</h2>
+      <p class="login-note">Dùng tài khoản Email/Password đã tạo trong Firebase Authentication.</p>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" placeholder="email@example.com"></div>
+      <div class="field"><label for="password">Mật khẩu</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+      <button id="loginBtn" class="btn btn-primary btn-block">ĐĂNG NHẬP</button>
+      <div id="loginStatus" class="status-line"></div>
+    </section>
+
+    <div id="app" class="hidden">
+      <section class="card">
+        <div class="topbar">
+          <div class="userline">Tài khoản: <strong id="userEmail"></strong></div>
+          <button id="logoutBtn" class="btn btn-gray">Đăng xuất</button>
+        </div>
+        <div class="section-title"><h2>1. Cấu hình chiến dịch</h2></div>
+        <div class="grid">
+          <div class="field"><label for="campaignId">Mã chiến dịch</label><input id="campaignId" type="text" placeholder="tung-ngoc-wedding"><div class="hint">Không dấu, ví dụ: tung-ngoc-wedding.</div></div>
+          <div class="field"><label for="campaignName">Tên chiến dịch</label><input id="campaignName" type="text" placeholder="Tùng & Ngọc Wedding"></div>
+          <div class="field"><label for="worker">Địa chỉ Worker</label><input id="worker" type="url" placeholder="https://ten-worker.workers.dev"><div class="hint">Không cần dấu / ở cuối.</div></div>
+          <div class="field"><label for="baseUrl">Link thiệp gốc</label><input id="baseUrl" type="url" placeholder="https://tungngocwedding.love"><div class="hint">Không thêm ?tenkhach= vào link gốc.</div></div>
+        </div>
+        <div class="toolbar">
+          <button id="openCampaignBtn" class="btn btn-gray">Mở chiến dịch</button>
+          <button id="saveCampaignBtn" class="btn btn-soft">Lưu cấu hình</button>
+        </div>
+        <div id="campaignStatus" class="status-line"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><h2>2. Thêm khách mời</h2></div>
+        <div class="field">
+          <label for="guestsInput">Danh sách khách mời</label>
+          <textarea id="guestsInput" placeholder="Chị Mai và gia đình&#10;Bạn Ngọc Anh&#10;Anh Trang Đặng"></textarea>
+          <div class="hint">Mỗi khách một dòng. V4 kiểm tra Firebase và tự bỏ qua tên đã tồn tại.</div>
+        </div>
+        <div class="toolbar">
+          <button id="importGuestsBtn" class="btn btn-primary">+ THÊM KHÁCH MỜI</button>
+          <button id="copyPendingBtn" class="btn btn-warning">Copy tất cả chưa copy</button>
+          <button id="exportCsvBtn" class="btn btn-success">Xuất CSV</button>
+        </div>
+        <div id="mainStatus" class="status-line"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><h2>3. Quản lý khách mời</h2></div>
+        <div class="stats">
+          <div class="stat"><b id="statAll">0</b><span>Tổng khách</span></div>
+          <div class="stat"><b id="statNew">0</b><span>Chưa copy</span></div>
+          <div class="stat"><b id="statCopied">0</b><span>Đã copy</span></div>
+          <div class="stat"><b id="statSent">0</b><span>Đã gửi</span></div>
+          <div class="stat"><b id="statConfirmed">0</b><span>Tham dự</span></div>
+          <div class="stat"><b id="statDeclined">0</b><span>Không tham dự</span></div>
+        </div>
+        <div class="filters">
+          <input id="search" type="search" placeholder="Tìm tên khách...">
+          <select id="statusFilter">
+            <option value="all">Tất cả trạng thái</option>
+            <option value="new">Chưa copy</option>
+            <option value="copied">Đã copy</option>
+            <option value="sent">Đã gửi</option>
+            <option value="confirmed">Xác nhận tham dự</option>
+            <option value="declined">Không tham dự</option>
+          </select>
+          <button id="refreshBtn" class="btn btn-gray">Làm mới</button>
+        </div>
+        <div id="guestList" class="list"><div class="empty">Chưa mở chiến dịch hoặc chưa có khách mời.</div></div>
+        <div class="notice">Khi bấm <strong>Copy link</strong>, Firebase đổi khách sang <strong>ĐÃ COPY</strong>; nút copy sẽ bị khóa sau khi đồng bộ.</div>
+        <div class="danger-zone"><button id="resetStatusesBtn" class="btn btn-danger">Reset trạng thái toàn bộ khách</button></div>
+      </section>
+    </div>
+    <footer>Invite Link Builder V4 • Firebase Authentication + Cloud Firestore</footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
