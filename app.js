@@ -140,7 +140,7 @@ async function sha256(text) {
 function makeInviteLink(workerUrl, landingUrl, guestName) {
   const u = new URL(normalizeWorker(workerUrl));
   u.searchParams.set("url", landingUrl.trim());
-  u.searchParams.set("tenkhach", guestName.trim());
+  u.searchParams.set("guest", guestName.trim());
   return u.toString();
 }
 
