@@ -138,10 +138,10 @@ async function sha256(text) {
 }
 
 function makeInviteLink(workerUrl, landingUrl, guestName) {
-  const u = new URL(normalizeWorker(workerUrl));
-  u.searchParams.set("url", landingUrl.trim());
+  const u = new URL(landingUrl.trim());
   u.searchParams.set("guest", guestName.trim());
   return u.toString();
+
 }
 
 function currentCampaignId() {
